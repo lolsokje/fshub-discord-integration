@@ -1,0 +1,52 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "array_indentation": true,
+        "blank_line_before_statement": {
+            "statements": [
+                "break",
+                "continue",
+                "declare",
+                "return",
+                "throw",
+                "try",
+                "for",
+                "foreach",
+                "if",
+                "while"
+            ]
+        },
+        "cast_spaces": true,
+        "method_chaining_indentation": true,
+        "no_empty_statement": true,
+        "no_extra_blank_lines": {
+            "tokens": [
+                "attribute",
+                "break",
+                "case",
+                "continue",
+                "curly_brace_block",
+                "default",
+                "extra",
+                "parenthesis_brace_block",
+                "return",
+                "square_brace_block",
+                "switch",
+                "throw",
+                "use"
+            ]
+        },
+        "no_singleline_whitespace_before_semicolons": true,
+        "no_trailing_comma_in_singleline": true,
+        "nullable_type_declaration": true,
+        "operator_linebreak": true,
+        "single_quote": true,
+        "statement_indentation": true,
+        "trailing_comma_in_multiline": true,
+        "yoda_style": {
+            "equal": false,
+            "identical": false,
+            "less_and_greater": false
+        }
+    }
+}
