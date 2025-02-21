@@ -7,15 +7,15 @@ namespace App\Models\API;
 final readonly class Plan
 {
     private function __construct(
-        public string $callsign,
+        public ?string $callsign,
     ) {
     }
 
     public static function create(
-        array $content,
+        ?array $content,
     ): self {
         return new self(
-            callsign: $content['callsign'],
+            callsign: $content['callsign'] ?? null,
         );
     }
 }

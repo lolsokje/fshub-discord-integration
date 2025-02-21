@@ -19,7 +19,7 @@ final readonly class Departure
     ): self {
         return new self(
             airport: Airport::create($content['airport']),
-            timestamp: Carbon::createFromFsHubTimestamp($content['gps']['departure_at']),
+            timestamp: Carbon::createFromFsHubTimestamp($content['departure_at']),
         );
     }
 }

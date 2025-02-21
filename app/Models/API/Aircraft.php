@@ -9,7 +9,7 @@ final readonly class Aircraft
     private function __construct(
         public string $icao,
         public string $name,
-        public string $registration,
+        public ?string $registration,
     ) {
     }
 
