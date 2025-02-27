@@ -6,7 +6,7 @@ namespace App\Models\API;
 
 final readonly class FsHubUser
 {
-    private function __construct(
+    public function __construct(
         public int $id,
         public string $name,
         public string $avatarUrl,

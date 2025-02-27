@@ -17,5 +17,9 @@ class AppServiceProvider extends ServiceProvider
         Carbon::macro('createFromFsHubTimestamp', function (string $timestamp): Carbon {
             return Carbon::createFromFormat('Y-m-d\TH:i:s.uT', $timestamp);
         });
+
+        Carbon::macro('toFsHubDateTimeString', function (): string {
+            return strtoupper($this->format('dMy Hi\Z'));
+        });
     }
 }

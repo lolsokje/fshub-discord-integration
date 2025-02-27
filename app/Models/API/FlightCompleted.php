@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\API;
 
-final readonly class FlightCompleted
+use App\Contracts\HasDetailsEmbedField;
+use App\Models\Discord\Embed\EmbedField;
+
+final readonly class FlightCompleted implements HasDetailsEmbedField
 {
-    private function __construct(
+    public function __construct(
         public int $id,
         public FsHubUser $user,
         public Aircraft $aircraft,
@@ -29,5 +32,48 @@ final readonly class FlightCompleted
             departure: Departure::create($content['departure']),
             arrival: Arrival::create($content['arrival']),
         );
+    }
+
+    public function url(): string
+    {
+        return "https://www.fshub.io/flight/$this->id/report";
+    }
+
+    public function duration(): string
+    {
+        $duration = $this->departure->timestamp->diff($this->arrival->timestamp);
+
+        return "{$duration->hours}h {$duration->minutes}m";
+    }
+
+    public function title(): string
+    {
+        return $this->plan->callsign ? "Flight {$this->plan->callsign} has arrived!" : 'A flight has arrived!';
+    }
+
+    public function description(): string
+    {
+        $callsign = $this->plan->callsign;
+
+        if ($callsign) {
+            return "Flight [$callsign]({$this->url()}) from {$this->departure->airport->shortDescription()} to {$this->arrival->airport->shortDescription()} has arrived!";
+        } else {
+            return "A [flight]({$this->url()}) from {$this->departure->airport->shortDescription()} to {$this->arrival->airport->shortDescription()} has arrived!";
+        }
+    }
+
+    public function detailsEmbedField(): EmbedField
+    {
+        $flightDetails = "
+            **Aircraft**: {$this->aircraft->identification()}
+            **Flight time**: {$this->duration()}
+        ";
+
+        // Registration seems to never be set?
+        // **Registration**: {$this->registration()}
+
+        return EmbedField::create()
+            ->setTitle('Flight details')
+            ->setContent($flightDetails);
     }
 }

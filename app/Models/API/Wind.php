@@ -6,7 +6,7 @@ namespace App\Models\API;
 
 final readonly class Wind
 {
-    private function __construct(
+    public function __construct(
         public int $speed,
         public int $direction,
     ) {
@@ -19,5 +19,12 @@ final readonly class Wind
             speed: $content['speed'],
             direction: $content['direction'],
         );
+    }
+
+    public function format(): string
+    {
+        $direction = str_pad("$this->direction", 3, '0', STR_PAD_LEFT);
+
+        return "$direction@{$this->speed}kts";
     }
 }

@@ -6,7 +6,7 @@ namespace App\Models\API;
 
 final readonly class Plan
 {
-    private function __construct(
+    public function __construct(
         public ?string $callsign,
     ) {
     }
