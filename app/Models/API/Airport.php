@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\API;
 
+use App\Contracts\IsAirport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-final readonly class Airport
+final readonly class Airport implements IsAirport
 {
     use HasFactory;
 
@@ -19,8 +20,12 @@ final readonly class Airport
     }
 
     public static function create(
-        array $content,
-    ): self {
+        ?array $content,
+    ): ?IsAirport {
+        if (!$content) {
+            return new NullAirport();
+        }
+
         return new self(
             icao: $content['icao'],
             iata: $content['iata'],

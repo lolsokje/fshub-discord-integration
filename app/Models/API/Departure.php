@@ -6,13 +6,14 @@ namespace App\Models\API;
 
 use App\Contracts\HasDetailsEmbedField;
 use App\Contracts\HasEmbedField;
+use App\Contracts\IsAirport;
 use App\Models\Discord\Embed\EmbedField;
 use Illuminate\Support\Carbon;
 
 final readonly class Departure implements HasEmbedField, HasDetailsEmbedField
 {
     public function __construct(
-        public Airport $airport,
+        public IsAirport $airport,
         public Wind $wind,
         public Carbon $timestamp,
     ) {
