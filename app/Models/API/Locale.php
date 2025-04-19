@@ -11,8 +11,8 @@ final readonly class Locale
     use HasFactory;
 
     public function __construct(
-        public string $city,
-        public string $country,
+        public ?string $city,
+        public ?string $country,
     ) {
     }
 

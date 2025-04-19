@@ -38,7 +38,13 @@ final readonly class Airport implements IsAirport
     {
         $airportCodes = $this->iata ? "_$this->icao, {$this->iata}_" : "_{$this->icao}_";
 
-        return "$this->name, {$this->locale->city}\n{$this->locale->country}\n([$airportCodes]({$this->airportUrl()}))";
+        $locale = "$this->name";
+
+        if ($this->locale->city) {
+            $locale .= ", {$this->locale->city}";
+        }
+
+        return "$locale\n{$this->locale->country}\n([$airportCodes]({$this->airportUrl()}))";
     }
 
     public function shortDescription(): string
