@@ -64,13 +64,18 @@ final readonly class FlightCompleted implements HasDetailsEmbedField
 
     public function detailsEmbedField(): EmbedField
     {
-        $flightDetails = "
+        if ($this->aircraft->hasRegistration()) {
+            $flightDetails = "
+            **Aircraft**: {$this->aircraft->identification()}
+            **Registration**: {$this->aircraft->fullRegistration()}
+            **Flight time**: {$this->duration()}
+        ";
+        } else {
+            $flightDetails = "
             **Aircraft**: {$this->aircraft->identification()}
             **Flight time**: {$this->duration()}
         ";
-
-        // Registration seems to never be set?
-        // **Registration**: {$this->registration()}
+        }
 
         return EmbedField::create()
             ->setTitle('Flight details')
