@@ -48,18 +48,31 @@ final readonly class FlightCompleted implements HasDetailsEmbedField
 
     public function title(): string
     {
-        return $this->plan->callsign ? "Flight {$this->plan->callsign} has arrived!" : 'A flight has arrived!';
+        if (! $this->isSlipstreamFlight()) {
+            return $this->plan->callsign ? "Flight {$this->plan->callsign} has arrived!" : 'A flight has arrived!';
+        }
+
+        $name = $this->slipstreamVariant($this->plan->callsign);
+
+        return "$name flight {$this->plan->callsign} has arrived!";
     }
 
     public function description(): string
     {
         $callsign = $this->plan->callsign;
 
-        if ($callsign) {
-            return "Flight [$callsign]({$this->url()}) from {$this->departure->airport->shortDescription()} to {$this->arrival->airport->shortDescription()} has arrived!";
+        $departureAndDestination = "from {$this->departure->airport->shortDescription()} to {$this->arrival->airport->shortDescription()}";
+        $name = $this->slipstreamVariant($callsign);
+
+        if ($this->isSlipstreamFlight()) {
+            $intro = "$name flight [$callsign]({$this->url()})";
+        } elseif ($callsign) {
+            $intro = "Flight [$callsign]({$this->url()})";
         } else {
-            return "A [flight]({$this->url()}) from {$this->departure->airport->shortDescription()} to {$this->arrival->airport->shortDescription()} has arrived!";
+            $intro = "A [flight]({$this->url()})";
         }
+
+        return "$intro $departureAndDestination";
     }
 
     public function detailsEmbedField(): EmbedField
@@ -80,5 +93,27 @@ final readonly class FlightCompleted implements HasDetailsEmbedField
         return EmbedField::create()
             ->setTitle('Flight details')
             ->setContent($flightDetails);
+    }
+
+    private function isSlipstreamFlight(): bool
+    {
+        if (! $this->plan->callsign) {
+            return false;
+        }
+
+        return str_starts_with($this->plan->callsign, 'SSA') || str_starts_with($this->plan->callsign, 'SSC');
+    }
+
+    private function slipstreamVariant(?string $callsign): string
+    {
+        if (! $callsign) {
+            return '';
+        }
+
+        if (str_starts_with($callsign, 'SSA')) {
+            return 'Slipstream Airways';
+        }
+
+        return 'Slipstream Cargo';
     }
 }
