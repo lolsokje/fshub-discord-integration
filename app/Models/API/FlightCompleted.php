@@ -72,7 +72,7 @@ final readonly class FlightCompleted implements HasDetailsEmbedField
             $intro = "A [flight]({$this->url()})";
         }
 
-        return "$intro $departureAndDestination";
+        return "$intro $departureAndDestination has arrived!";
     }
 
     public function detailsEmbedField(): EmbedField
